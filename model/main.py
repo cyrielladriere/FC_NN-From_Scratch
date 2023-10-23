@@ -4,14 +4,13 @@ from model.model import model
 def main():
     #loading the dataset
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    # Shapes
+    # x_train: (60 000, 28, 28)
+    # y_train: (60 000,)
+    # x_train: (10 000, 28, 28)
+    # y_train: (10 000,)
 
-    #printing the shapes of the vectors 
-    print('X_train: ' + str(x_train.shape))
-    print('Y_train: ' + str(y_train.shape))
-    print('X_test:  ' + str(x_test.shape))
-    print('Y_test:  ' + str(y_test.shape))
-
-    mdl = model(x_train, y_train)
+    # mdl = model(x_train, y_train)
 
     return
 
