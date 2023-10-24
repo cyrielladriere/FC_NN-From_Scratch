@@ -1,4 +1,5 @@
 # https://towardsdatascience.com/math-neural-network-from-scratch-in-python-d6da9f29ce65
+# https://www.youtube.com/watch?v=TEWy9vZcxW4
 import numpy as np
 
 class Layer():
@@ -22,7 +23,7 @@ class FCLayer(Layer):
 
     def forward(self, input):
         self.input = input
-        self.output = np.dot(self.input, self.weigths) + self.bias  # Z = XW + B
+        self.output = np.dot(self.input, self.weights) + self.bias  # Z = XW + B
         return self.output
 
     # computes dE/dW, dE/dB for a given output_error=dE/dY. Returns input_error=dE/dX.

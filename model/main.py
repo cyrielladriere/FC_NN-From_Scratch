@@ -1,5 +1,7 @@
 from keras.datasets import mnist
-from model.model import model
+import numpy as np
+from model.Network import Network
+from model.Layer import FCLayer, ActivationLayer
 
 def main():
     #loading the dataset
@@ -10,9 +12,58 @@ def main():
     # x_train: (10 000, 28, 28)
     # y_train: (10 000,)
 
-    # mdl = model(x_train, y_train)
+    # reshape and normalize input data
+    x_train = x_train.reshape(x_train.shape[0], 1, 28*28)   # shape: (1, 28*28)
+    x_train = x_train.astype('float32')
+    x_train /= 255
 
+    x_test = x_test.reshape(x_test.shape[0], 1, 28*28)
+    x_test = x_test.astype('float32')
+    x_test /= 255
+
+    # network
+    net = Network()
+    net.add(FCLayer(28*28, 75))     # output_shape: (1, 75)
+    net.add(ActivationLayer(tanh, tanh_derivative)) 
+    net.add(FCLayer(75, 50))        # output_shape: (1, 50)
+    net.add(ActivationLayer(tanh, tanh_derivative))
+    net.add(FCLayer(50, 10))        #ouput_shape: (1, 10)
+    net.add(ActivationLayer(tanh, tanh_derivative))
+
+    # train
+    net.compile(mse, mse_derivative)
+    net.fit(x_train[:1000], y_train[:1000], n_epochs=30, learning_rate=0.1)
+
+    # test on 3 samples
+    out = net.predict(x_test[0:3])
+    print("\n")
+    print("predicted values : ")
+    print(out, end="\n")
+    print("true values : ")
+    print(y_test[0:3])
     return
+
+# forward pass
+def ReLU(z):
+    return max(0, z)
+
+# backward pass, receives input from next layer (so output of this layer)
+def ReLU_derivative(output):
+    return 1 if output > 0 else 0
+
+# loss function 
+def mse(y_true, y_pred):
+    return np.mean(np.power(y_true-y_pred, 2));
+
+def mse_derivative(y_true, y_pred):
+    return 2*(y_pred-y_true)/y_true.size;
+
+# activation function and its derivative
+def tanh(x):
+    return np.tanh(x);
+
+def tanh_derivative(x):
+    return 1-np.tanh(x)**2;
 
 if __name__ == "__main__":
     main()
