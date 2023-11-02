@@ -2,6 +2,7 @@ from keras.datasets import mnist
 import numpy as np
 from model.Network import Network
 from model.Layer import FCLayer, ActivationLayer
+from keras.utils import to_categorical
 
 def main():
     #loading the dataset
@@ -21,6 +22,11 @@ def main():
     x_test = x_test.astype('float32')
     x_test /= 255
 
+    # encode output which is a number in range [0,9] into a vector of size 10
+    y_train = to_categorical(y_train)
+    y_test = to_categorical(y_test)
+
+
     # network
     net = Network()
     net.add(FCLayer(28*28, 75))     # output_shape: (1, 75)
@@ -38,9 +44,9 @@ def main():
     out = net.predict(x_test[0:3])
     print("\n")
     print("predicted values : ")
-    print(out, end="\n")
+    print([np.argmax(subarray) for subarray in out], end="\n")
     print("true values : ")
-    print(y_test[0:3])
+    print(np.argmax(y_test[:3], axis=1))
     return
 
 # forward pass

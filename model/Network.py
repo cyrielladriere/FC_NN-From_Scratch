@@ -36,7 +36,7 @@ class Network():
 
                 # loss and accuracy are only used to show at end of each epoch, not used in computations of network 
                 loss += self.loss(y_train[i], output)
-                accuracy += np.sum(output == y_train[i])
+                accuracy += 1 if np.argmax(output) == np.argmax(y_train[i]) else 0
 
                 # backward prop (error, not loss is used to for back prop)
                 error = self.loss_derivative(y_train[i], output)
