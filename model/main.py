@@ -14,11 +14,11 @@ def main():
     # y_train: (10 000,)
 
     # reshape and normalize input data
-    x_train = x_train.reshape(x_train.shape[0], 1, 28*28)   # shape: (1, 28*28)
+    x_train = x_train.reshape(x_train.shape[0], 28*28, 1)   # shape: (28*28, 1)
     x_train = x_train.astype('float32')
     x_train /= 255
 
-    x_test = x_test.reshape(x_test.shape[0], 1, 28*28)
+    x_test = x_test.reshape(x_test.shape[0], 28*28, 1)
     x_test = x_test.astype('float32')
     x_test /= 255
 
@@ -38,7 +38,7 @@ def main():
 
     # train
     net.compile(mse, mse_derivative)
-    net.fit(x_train[:1000], y_train[:1000], n_epochs=30, learning_rate=0.1)
+    net.fit(x_train[:1000], y_train[:1000], n_epochs=10, learning_rate=0.1)
 
     # test on 3 samples
     out = net.predict(x_test[0:3])
@@ -51,18 +51,20 @@ def main():
 
 # forward pass
 def ReLU(z):
-    return max(0, z)
+    return np.maximum(0, z)
 
 # backward pass, receives input from next layer (so output of this layer)
 def ReLU_derivative(output):
-    return 1 if output > 0 else 0
+    # Apply the transformation to 1 if element > 0, else 0
+    return np.where(output > 0, 1, 0)
 
 # loss function 
 def mse(y_true, y_pred):
     return np.mean(np.power(y_true-y_pred, 2));
 
 def mse_derivative(y_true, y_pred):
-    return 2*(y_pred-y_true)/y_true.size;
+    y_pred = y_pred.reshape((1, y_pred.shape[0]))
+    return 2*(y_pred-y_true)/y_true.size # (batch, classes)
 
 # activation function and its derivative
 def tanh(x):

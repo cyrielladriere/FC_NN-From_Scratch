@@ -38,10 +38,10 @@ class Network():
                 loss += self.loss(y_train[i], output)
                 accuracy += 1 if np.argmax(output) == np.argmax(y_train[i]) else 0
 
-                # backward prop (error, not loss is used to for back prop)
-                error = self.loss_derivative(y_train[i], output)
+                # backward prop 
+                dldy = self.loss_derivative(y_train[i], output) # (1, classes)
                 for layer in reversed(self.layers):
-                    error = layer.backward(error, learning_rate)
+                    dldy = layer.backward(dldy, learning_rate)
             loss /= samples
             print(f"Epoch {epoch+1}/{n_epochs}: train_loss={loss: .6f}, train_accuracy={accuracy/len(x_train): .3f}")
 
