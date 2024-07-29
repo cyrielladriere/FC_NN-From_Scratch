@@ -1,7 +1,7 @@
 from keras.datasets import mnist
 import numpy as np
-from model.Network import Network
-from model.Layer import FCLayer, ActivationLayer
+from model.network import Network
+from model.layer import FCLayer, ActivationLayer
 from keras.utils import to_categorical
 
 def main():
@@ -38,7 +38,7 @@ def main():
 
     # train
     net.compile(mse, mse_derivative)
-    net.fit(x_train[:1000], y_train[:1000], n_epochs=10, learning_rate=0.1)
+    net.fit(x_train[:1000], y_train[:1000], n_epochs=30, learning_rate=0.1)
 
     # test on 3 samples
     out = net.predict(x_test[0:3])
