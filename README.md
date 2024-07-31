@@ -61,6 +61,7 @@ Currently supported **activation functions**:
 
 ## TODO
 - Add visualisations of loss, accuracy over training epochs for readme
+- Compare different losses, activation functions, network depths,...
 - Add softmax
 - Add mini-batch GD
 - Add optimizer
