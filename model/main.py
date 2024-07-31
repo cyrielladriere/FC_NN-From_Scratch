@@ -2,6 +2,7 @@ from keras.datasets import mnist
 import numpy as np
 from model.network import Network
 from model.layer import FCLayer, ActivationLayer
+from model.utils import sigmoid, sigmoid_derivative, tanh, tanh_derivative, mse, mse_derivative
 from keras.utils import to_categorical
 
 def main():
@@ -30,48 +31,30 @@ def main():
     # network
     net = Network()
     net.add(FCLayer(28*28, 75))     # output_shape: (1, 75)
-    net.add(ActivationLayer(tanh, tanh_derivative)) 
+    net.add(ActivationLayer(sigmoid, sigmoid_derivative)) 
     net.add(FCLayer(75, 50))        # output_shape: (1, 50)
-    net.add(ActivationLayer(tanh, tanh_derivative))
+    net.add(ActivationLayer(sigmoid, sigmoid_derivative))
     net.add(FCLayer(50, 10))        #ouput_shape: (1, 10)
-    net.add(ActivationLayer(tanh, tanh_derivative))
+    net.add(ActivationLayer(sigmoid, sigmoid_derivative))
 
     # train
     net.compile(mse, mse_derivative)
-    net.fit(x_train[:1000], y_train[:1000], n_epochs=30, learning_rate=0.1)
+    net.fit(x_train, y_train, n_epochs=200, learning_rate=0.001)
 
-    # test on 3 samples
-    out = net.predict(x_test[0:3])
-    print("\n")
-    print("predicted values : ")
-    print([np.argmax(subarray) for subarray in out], end="\n")
-    print("true values : ")
-    print(np.argmax(y_test[:3], axis=1))
+    # test
+    out = net.predict(x_test)
+    preds = [np.argmax(subarray) for subarray in out]
+    actual = np.argmax(y_test, axis=1)
+
+    # Calculate the boolean array of correct predictions
+    correct_predictions = preds == actual
+
+    # Calculate the accuracy as the mean of correct predictions
+    accuracy = np.mean(correct_predictions)
+    print("Accuracy on test set: ", accuracy)
+    # print("true values : ")
+    # print(np.argmax(y_test[:3], axis=1))
     return
-
-# forward pass
-def ReLU(z):
-    return np.maximum(0, z)
-
-# backward pass, receives input from next layer (so output of this layer)
-def ReLU_derivative(output):
-    # Apply the transformation to 1 if element > 0, else 0
-    return np.where(output > 0, 1, 0)
-
-# loss function 
-def mse(y_true, y_pred):
-    return np.mean(np.power(y_true-y_pred, 2));
-
-def mse_derivative(y_true, y_pred):
-    y_pred = y_pred.reshape((1, y_pred.shape[0]))
-    return 2*(y_pred-y_true)/y_true.size # (batch, classes)
-
-# activation function and its derivative
-def tanh(x):
-    return np.tanh(x);
-
-def tanh_derivative(x):
-    return 1-np.tanh(x)**2;
 
 if __name__ == "__main__":
     main()

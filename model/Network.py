@@ -26,8 +26,8 @@ class Network():
     def fit(self, x_train, y_train, n_epochs, learning_rate):
         samples = len(x_train)
         for epoch in range(n_epochs):
-            loss = 0
-            accuracy = 0
+            loss = 0.0
+            accuracy = 0.0
             for i, sample in enumerate(x_train):
                 # forward prop
                 output = sample
