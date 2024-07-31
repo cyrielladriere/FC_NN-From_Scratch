@@ -1,9 +1,13 @@
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
 from keras.datasets import mnist
+from keras.utils import to_categorical
 import numpy as np
 from model.network import Network
 from model.layer import FCLayer, ActivationLayer
 from model.utils import sigmoid, sigmoid_derivative, tanh, tanh_derivative, mse, mse_derivative
-from keras.utils import to_categorical
+
 
 def main():
     #loading the dataset
