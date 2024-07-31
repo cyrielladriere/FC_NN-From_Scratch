@@ -1,5 +1,5 @@
 # FC_NN-From_Scratch
-This repository implements a neural network from scratch in Python using Numpy. The resulting neural network is trained on the MNIST dataset.
+This repository implements a **fully connected neural network from scratch** in Python using Numpy. The resulting neural network is trained on the MNIST dataset.
 
 # Environment
 This codebase was developed in Python 3.10. Dependancies can be installed as follows:
