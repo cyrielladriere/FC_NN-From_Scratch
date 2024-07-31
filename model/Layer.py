@@ -1,5 +1,3 @@
-# https://towardsdatascience.com/math-neural-network-from-scratch-in-python-d6da9f29ce65
-# https://www.youtube.com/watch?v=TEWy9vZcxW4
 import numpy as np
 
 class Layer():
