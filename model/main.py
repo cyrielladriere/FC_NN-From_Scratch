@@ -6,7 +6,7 @@ from keras.utils import to_categorical
 import numpy as np
 from model.network import Network
 from model.layer import FCLayer, ActivationLayer
-from model.utils import sigmoid, sigmoid_derivative, tanh, tanh_derivative, mse, mse_derivative
+from model.utils import sigmoid, sigmoid_derivative, tanh, tanh_derivative, mse, mse_derivative, categorical_cross_entropy, categorical_cross_entropy_derivative
 
 
 def main():
@@ -42,20 +42,9 @@ def main():
     net.add(ActivationLayer(sigmoid, sigmoid_derivative))
 
     # train
-    net.compile(mse, mse_derivative)
-    net.fit(x_train, y_train, n_epochs=200, learning_rate=0.001)
+    net.compile(categorical_cross_entropy, categorical_cross_entropy_derivative)
+    net.fit(x_train, y_train, x_test, y_test, n_epochs=200, learning_rate=0.001)
 
-    # test
-    out = net.predict(x_test)
-    preds = [np.argmax(subarray) for subarray in out]
-    actual = np.argmax(y_test, axis=1)
-
-    # Calculate the boolean array of correct predictions
-    correct_predictions = preds == actual
-
-    # Calculate the accuracy as the mean of correct predictions
-    accuracy = np.mean(correct_predictions)
-    print("Accuracy on test set: ", accuracy)
     # print("true values : ")
     # print(np.argmax(y_test[:3], axis=1))
     return

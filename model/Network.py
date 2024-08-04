@@ -1,10 +1,24 @@
 import numpy as np
+import time
 
 class Network():
     def __init__(self):
         self.layers = []
         self.loss = None
         self.loss_derivative = None
+
+    def _evaluate(self, x_test, y_test):
+        # test
+        out = self.predict(x_test)
+        preds = [np.argmax(subarray) for subarray in out]
+        actual = np.argmax(y_test, axis=1)
+
+        # Calculate the boolean array of correct predictions
+        correct_predictions = preds == actual
+
+        # Calculate the accuracy as the mean of correct predictions
+        accuracy = np.mean(correct_predictions)
+        print("test_accuracy= ", accuracy)
 
     # add layer to network
     def add(self, layer):
@@ -23,9 +37,10 @@ class Network():
             result.append(output)
         return result
     
-    def fit(self, x_train, y_train, n_epochs, learning_rate):
+    def fit(self, x_train, y_train, x_test, y_test, n_epochs, learning_rate):
         samples = len(x_train)
         for epoch in range(n_epochs):
+            epoch_start = time.time()
             loss = 0.0
             accuracy = 0.0
             for i, sample in enumerate(x_train):
@@ -43,7 +58,6 @@ class Network():
                 for layer in reversed(self.layers):
                     dldy = layer.backward(dldy, learning_rate)
             loss /= samples
-            print(f"Epoch {epoch+1}/{n_epochs}: train_loss={loss: .6f}, train_accuracy={accuracy/len(x_train): .3f}")
-
-
-
+            time_elapsed = time.time() - epoch_start
+            print(f"[{time_elapsed // 60:.0f}m {time_elapsed % 60:.0f}s] Epoch {epoch+1}/{n_epochs}: train_loss={loss: .6f}, train_accuracy={accuracy/len(x_train): .3f}")
+            self._evaluate(x_test, y_test)
