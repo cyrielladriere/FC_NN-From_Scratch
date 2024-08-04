@@ -8,6 +8,13 @@ def mse_derivative(y_true, y_pred):
     y_pred = y_pred.reshape((1, y_pred.shape[0]))
     return 2*(y_pred-y_true)/y_true.size # (batch, classes)
 
+def categorical_cross_entropy(y_true, y_pred, n_classes=10):
+    return -1/n_classes * np.sum(y_true * np.log(y_pred))
+
+def categorical_cross_entropy_derivative(y_true, y_pred):
+    y_pred = y_pred.reshape((1, y_pred.shape[0]))
+    return y_pred - y_true # (batch, classes)
+
 
 ################### Activation Functions ###################
 def tanh(x):

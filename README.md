@@ -53,6 +53,7 @@ Loss functions and activation functions (and their derivatives) are implemented 
 
 Currently supported **loss functions**:
 - Mean Squared Error (MSE)
+- Categorical Cross Entropy
 
 Currently supported **activation functions**:
 - Sigmoid
