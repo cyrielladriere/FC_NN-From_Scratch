@@ -18,7 +18,7 @@ class Network():
 
         # Calculate the accuracy as the mean of correct predictions
         accuracy = np.mean(correct_predictions)
-        print("test_accuracy= ", accuracy)
+        return accuracy
 
     # add layer to network
     def add(self, layer):
@@ -58,6 +58,6 @@ class Network():
                 for layer in reversed(self.layers):
                     dldy = layer.backward(dldy, learning_rate)
             loss /= samples
+            test_acc = self._evaluate(x_test, y_test)
             time_elapsed = time.time() - epoch_start
-            print(f"[{time_elapsed // 60:.0f}m {time_elapsed % 60:.0f}s] Epoch {epoch+1}/{n_epochs}: train_loss={loss: .6f}, train_accuracy={accuracy/len(x_train): .3f}")
-            self._evaluate(x_test, y_test)
+            print(f"[{time_elapsed // 60:.0f}m {time_elapsed % 60:.0f}s] Epoch {epoch+1}/{n_epochs}: train_loss={loss: .6f}, train_accuracy={accuracy/len(x_train): .3f}, test_accuracy={test_acc: .3f}")

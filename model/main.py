@@ -43,7 +43,7 @@ def main():
 
     # train
     net.compile(categorical_cross_entropy, categorical_cross_entropy_derivative)
-    net.fit(x_train, y_train, x_test, y_test, n_epochs=200, learning_rate=0.001)
+    net.fit(x_train, y_train, x_test, y_test, n_epochs=100, learning_rate=0.001)
 
     # print("true values : ")
     # print(np.argmax(y_test[:3], axis=1))
