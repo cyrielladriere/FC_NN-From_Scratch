@@ -61,6 +61,7 @@ Currently supported **activation functions**:
 - ReLU
 
 ## TODO
+- Fix numeric instabilities in activation/loss functions
 - Add visualisations of loss, accuracy over training epochs for readme
 - Compare different losses, activation functions, network depths,...
 - Add softmax
